@@ -1,0 +1,94 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+*{
+  margin: 0px;
+  padding: 0px;
+}
+body{
+  font-size: large;
+  background-color:#ddf;
+}
+h1{
+  margin-bottom: 0.1em;
+}
+.date{
+  background-color: black;
+  color: white;
+  padding:0.5em;
+}
+.day-sched{
+  display:flex;
+}
+.day-sched .time{
+  flex: 0 0 140px;
+}
+.day-sched .desc{
+}
+.cover{
+  position:absolute;
+  top:6px;
+  right:6px;
+  width:600px;
+  height: auto;
+  border: solid 3px white;
+  border-radius: 50px;
+}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="out/schedule.js"></script>
+<script src="out/photo.js"></script>
+</head>
+<body>
+	<h1>WEB SIGNAGE</h1>
+	<div id="app">
+		<div v-for="day in schedule">
+			<div class="date">{{ day.date }}</div>
+			<div v-for="item in day.items">
+				<div class="day-sched">
+					<div class="time" v-bind:style="{backgroundColor: item.labelColor}">
+						<span v-if="!item.attributes.all_day">
+							{{ ("0" + item.attributes.start.getHours()).slice(-2) + ":" + ("0" + item.attributes.start.getMinutes()).slice(-2) }} - {{ ("0" + item.attributes.end.getHours()).slice(-2) + ":" + ("0" + item.attributes.end.getMinutes()).slice(-2) }}
+						</span>
+					</div>
+					<div class="desc">{{ item.attributes.title }}</div>
+				</div>
+			</div>
+		</div>
+		<img class="cover" v-bind:src="photo" />
+		<div>{{test}}</div>
+	</div>
+	<script>
+function hoge(){return "in hoge"}
+schedule.forEach((d) => {
+  let ddate = new Date(d.date);
+  d.date = (ddate.getMonth() + 1) + "/" + ddate.getDate() + " " + ["日", "月", "火", "水", "木", "金", "土"][ddate.getDay()];
+  d.items.forEach((i) => {
+    i.attributes.start = new Date(i.attributes.start_at);
+    i.attributes.end = new Date(i.attributes.end_at);
+  })
+});
+let photo = photoList[Math.floor(Math.random() * photoList.length)].replace("/media/mystorage", "/webdav");
+var app = new Vue({
+  el: "#app",
+  data: {
+    schedule: schedule,
+    photo: photo,
+    test: photo,
+  },
+  methods:{}
+});
+
+setTimeout(() =>{
+  let nextPhoto = photoList[Math.floor(Math.random() * photoList.length)].replace("/media/mystorage", "/webdav");
+  app.$data.photo = nextPhoto;
+  app.$data.test = nextPhoto;
+}, 15 * 60 * 1000); // 15min
+setTimeout(() =>{
+  document.location.reload();
+}, 60 * 60 * 1000); // 1h
+</script>
+</body>
+</html>
