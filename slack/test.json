@@ -1,0 +1,7 @@
+payload={
+      "username": "webhook"
+    , "channel": "#alert"
+    , "text": "test post"
+    , "icon_emoji": ":ghost:"
+}
+
