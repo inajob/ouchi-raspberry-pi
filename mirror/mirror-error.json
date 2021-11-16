@@ -1,0 +1,7 @@
+payload={
+      "username": "webhook"
+    , "channel": "#alert"
+    , "text": "[mirror] FAILED!!"
+    , "icon_emoji": ":ghost:"
+}
+
