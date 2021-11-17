@@ -70,7 +70,6 @@ Webブラウザを使い TimeTreeの1週間分の予定、ディスク内の写�
 
 ## 環境に合わせたデータの用意1
 
-- `mkdir secrets` # .gitkeepで用意しよう
 - `./secrets`以下に下記ファイル名・内容のファイルを配置する
   - `slack-token` バックアップの成功・失敗を通知するためのSlack API Token
   - `timetree-token` TimeTree APIにアクセスするためのToken
