@@ -1,0 +1,13 @@
+apt:
+  packages:
+    - name: vim
+    - name: apache2
+    - name: samba
+    - name: chromium
+    - name: nodejs
+    - name: npm
+    - name: xdotool
+    # for google-home-notifier
+    - name: libnss-mdns
+    # for google-home-notifier
+    - name: libavahi-compat-libdnssd-dev

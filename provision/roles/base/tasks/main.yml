@@ -1,0 +1,147 @@
+- name: Set timezone to Asia/Tokyo
+  timezone:
+    name: Asia/Tokyo
+
+- name: install packages
+  apt:
+    name: '{{ item.name }}'
+    state: '{{ item.state | default("present") }}'
+    update_cache: yes
+  with_items: '{{ apt.packages }}'
+
+- name: update fstab
+  blockinfile:
+    path: /etc/fstab
+    insertbefore: EOF
+    block: "{{ lookup('file', 'fstab-backup-info') }}"
+
+- name: apache config
+  blockinfile:
+    path: /etc/apache2/sites-enabled/000-default.conf
+    insertbefore: "DocumentRoot /var/www/html"
+    block: |
+          Alias /webdav "/media/mystorage"
+ 
+          <Location /webdav>
+                  Require all granted
+                  DAV on
+                  Options Indexes
+          </Location>
+
+- name: use dav, dav_fs module
+  file:
+    src: /etc/apache2/mods-available/{{ item }}
+    dest: /etc/apache2/mods-enabled/{{ item }}
+    state: link
+  with_items:
+    - dav.load
+    - dav_fs.load
+    - dav_fs.conf
+
+- name: make link to web-signage
+  file:
+    src: /home/pi/work/web-signage
+    dest: /var/www/html/web-signage
+    state: link
+
+- name: set user cron
+  cron:
+    name: sync photo for web-signage
+    user: pi
+    hour: "0"
+    minute: "0"
+    job: "/home/pi/work/web-signage/daily.sh"
+
+- name: set user cron for sleep time
+  cron:
+    name: "{{ item.name }}"
+    user: pi
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    job: "/home/pi/work/google-home/sleep-time.sh"
+  loop:
+    - name: noon sleep timer
+      hour: 12
+      minute: 45
+    - name: afternoon sleep timer
+      hour: 19
+      minute: 15
+
+- name: set file sync
+  cron:
+    name: backup files
+    user: root
+    hour: "5"
+    minute: "0"
+    job: "/home/pi/work/mirror/mirror.sh >> /home/pi/work/mirror/mirror.log  2>&1"
+
+- name: samba config
+  blockinfile:
+    path: /etc/samba/smb.conf
+    insertbefore: EOF
+    block: |
+      [raspberrypi]
+         comment = Raspberry Pi
+         path = /media/mystorage
+         public = yes
+         guset ok = yes
+         read only = no
+         browsable = no
+         force user = pi
+
+         vfs objects = recycle
+         ; recycle:repository = .recycle
+         recycle:keeptree = no
+         recycle:versions = yes
+         recycle:touch = no
+         recycle:maxsize = 0
+         recycle:exclude = *.tmp *~
+
+- name: update autostart
+  blockinfile:
+    path: /home/pi/.config/lxsession/LXDE/autostart
+    insertbefore: EOF
+    block: |
+      /home/pi/kiosk.sh
+
+- name: copy kiosk.sh
+  copy:
+    src: files/kiosk.sh
+    dest: /home/pi/kiosk.sh
+    mode: 0755
+    owner: pi
+    group: pi
+
+- name: update x-session-manager
+  file:
+    src: /usr/bin/lxsession
+    dest: /etc/alternatives/x-session-manager
+    state: link
+
+- name: update x-window-manager
+  file:
+    src: /usr/bin/openbox
+    dest: /etc/alternatives/x-window-manager
+    state: link
+
+# set up google notifier
+- name: git clone google-home-notifier
+  git:
+    repo: https://github.com/inajob/google-home-notifier.git
+    dest: /home/pi/work/google-home-notifier
+  become: yes
+  become_user: pi
+
+- name: npm install in google-home-notifier
+  shell:
+    cmd:  npm install
+    chdir: /home/pi/work/google-home-notifier
+  become: yes
+  become_user: pi
+
+- name: change file in node_modules
+  lineinfile:
+    path: /home/pi/work/google-home-notifier/node_modules/mdns/lib/browser.js
+    regexp: "^, 'DNSServiceGetAddrInfo'"
+
+    line: ", 'DNSServiceGetAddrInfo' in dns_sd ? rst.DNSServiceGetAddrInfo() : rst.getaddrinfo({families:[4]})"
