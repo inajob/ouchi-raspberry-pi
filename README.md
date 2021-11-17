@@ -96,7 +96,7 @@ UUID=取得したUUID2 /media/mystorage2 ntfs-3g async,auto,dev,exec,nofail,gid=
 
 ## 環境構築スクリプトの実行
 
-- `./setup.sh`を実行（TODO: setup.shを用意する)
+- `./setup.sh`を実行
 
 ## 現状の制限
 
