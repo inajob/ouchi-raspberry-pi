@@ -1,3 +1,4 @@
-secrets
+secrets/*
+!.gitkeep
 mirror/mirror.log
 web-signage/out
