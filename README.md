@@ -14,6 +14,8 @@ inajobの家でファイルサーバ兼、デジタルサイネージを司っ�
 - google-home-notifierが起動しており、これを経由して同一LAN内のGoogle Homeに任意の文言をしゃべらせたり、mp3を再生出来ます
 - 上記仕組みを使い「こもりうた」を定時に再生します。
 
+<img src="ouchi-raspberrypi.jpg">
+
 # 構成
 
 ## 必要な機材
