@@ -76,26 +76,9 @@
     job: "/home/pi/work/mirror/mirror.sh >> /home/pi/work/mirror/mirror.log  2>&1"
 
 - name: samba config
-  blockinfile:
-    path: /etc/samba/smb.conf
-    insertbefore: EOF
-    block: |
-      [raspberrypi]
-         comment = Raspberry Pi
-         path = /media/mystorage
-         public = yes
-         guset ok = yes
-         read only = no
-         browsable = no
-         force user = pi
-
-         vfs objects = recycle
-         ; recycle:repository = .recycle
-         recycle:keeptree = no
-         recycle:versions = yes
-         recycle:touch = no
-         recycle:maxsize = 0
-         recycle:exclude = *.tmp *~
+  copy:
+    src: files/smb.conf
+    dest: /etc/samba/smb.conf
 
 - name: update autostart
   blockinfile:
