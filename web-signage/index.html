@@ -18,6 +18,15 @@ h1{
   color: white;
   padding:0.5em;
 }
+.minTemp{
+  color: #aaf;
+  font-weight: bold;
+}
+.maxTemp{
+  color: red;
+  font-weight: bold;
+}
+
 .day-sched{
   display:flex;
 }
@@ -38,6 +47,7 @@ h1{
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="out/weather.js"></script>
 <script src="out/schedule.js"></script>
 <script src="out/photo.js"></script>
 </head>
@@ -45,7 +55,7 @@ h1{
 	<h1>WEB SIGNAGE</h1>
 	<div id="app">
 		<div v-for="day in schedule">
-			<div class="date">{{ day.date }}</div>
+			<div class="date">{{ day.date }} <span class="minTemp">{{day.minTemp}}</span>/<span class="maxTemp">{{day.maxTemp}}</span></div>
 			<div v-for="item in day.items">
 				<div class="day-sched">
 					<div class="time" v-bind:style="{backgroundColor: item.labelColor}">
@@ -62,9 +72,39 @@ h1{
 	</div>
 	<script>
 function hoge(){return "in hoge"}
+
+weatherObj = {};
+tokyo = weather[8]
+
+// the day after tomorrow
+ds = tokyo["week"]["timeSeries"][1]["timeDefines"]
+ds.forEach((ds, i) => {
+  let d = new Date(ds)
+  let o = {
+    minTemp: tokyo["week"]["timeSeries"][1]["areas"]["tempsMin"][i],
+    maxTemp: tokyo["week"]["timeSeries"][1]["areas"]["tempsMax"][i],
+  }
+  weatherObj[(d.getMonth()+1) + "/" + d.getDate()] = o
+})
+
+// tomorrow
+ds = tokyo["srf"]["timeSeries"][2]["timeDefines"]
+let d = new Date(ds[0])
+let o = {
+  minTemp: tokyo["srf"]["timeSeries"][2]["areas"]["temps"][0],
+  maxTemp: tokyo["srf"]["timeSeries"][2]["areas"]["temps"][1], 
+}
+weatherObj[(d.getMonth()+1) + "/" + d.getDate()] = o
+
+
 schedule.forEach((d) => {
   let ddate = new Date(d.date);
   d.date = (ddate.getMonth() + 1) + "/" + ddate.getDate() + " " + ["日", "月", "火", "水", "木", "金", "土"][ddate.getDay()];
+  let wo = weatherObj[(ddate.getMonth()+1) + "/" + (ddate.getDate())]
+  if(wo){
+    d.maxTemp = wo.maxTemp
+    d.minTemp = wo.minTemp
+  }
   d.items.forEach((i) => {
     i.attributes.start = new Date(i.attributes.start_at);
     i.attributes.end = new Date(i.attributes.end_at);
