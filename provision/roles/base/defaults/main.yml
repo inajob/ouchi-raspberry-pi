@@ -7,6 +7,7 @@ apt:
     - name: nodejs
     - name: npm
     - name: xdotool
+    - name: jq
     # for google-home-notifier
     - name: libnss-mdns
     # for google-home-notifier

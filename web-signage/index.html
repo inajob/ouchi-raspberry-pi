@@ -1,6 +1,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache">
 <style>
 *{
   margin: 0px;
@@ -50,6 +51,7 @@ h1{
 <script src="out/weather.js"></script>
 <script src="out/schedule.js"></script>
 <script src="out/photo.js"></script>
+<script src="out/disk.js"></script>
 </head>
 <body>
 	<h1>WEB SIGNAGE</h1>
@@ -68,6 +70,7 @@ h1{
 			</div>
 		</div>
 		<img class="cover" v-bind:src="photo" />
+		<div>{{disk}}</div>
 		<div>{{test}}</div>
 	</div>
 	<script>
@@ -117,6 +120,7 @@ var app = new Vue({
     schedule: schedule,
     photo: photo,
     test: photo,
+    disk: disk.file,
   },
   methods:{}
 });
