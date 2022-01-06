@@ -65,7 +65,7 @@
       minute: 45
     - name: afternoon sleep timer
       hour: 19
-      minute: 15
+      minute: 30
 
 - name: set file sync
   cron:

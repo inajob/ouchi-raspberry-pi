@@ -87,6 +87,7 @@ Webブラウザを使い TimeTreeの1週間分の予定、ディスク内の写�
   - `timetree-token` TimeTree APIにアクセスするためのToken
   - `timetree-id` TimeTreeで表示するカレンダーを示すID
   - `photo-path` サイネージにランダム表示する写真が格納されているルートディレクトリまでのパスを `/media/mystorage`からの相対パスで記載したもの(`/media/mystorage`以下の画像すべてであれば `./`と記載したファイルでOK)
+  - `birthdate` 誕生日（サイネージの写真撮影時の月齢を表示するため）
 
 ## 環境に合わせたデータの用意2
 

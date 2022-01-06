@@ -49,12 +49,21 @@ h1{
   border: solid 3px white;
   border-radius: 50px;
 }
+.top{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+.top div{
+  background-color: white;
+}
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script src="out/weather.js"></script>
 <script src="out/schedule.js"></script>
-<script src="out/photo.js"></script>
+<script src="out/birthdate.js"></script>
+<script src="out/photo.js?20220102"></script>
 <script src="out/disk.js"></script>
 </head>
 <body>
@@ -74,7 +83,9 @@ h1{
 			</div>
 		</div>
 		<img class="cover" v-bind:src="photo" />
-		<div>{{disk}}</div>
+		<div class="top">
+			<div>{{disk}}, {{dateStr}}</div>
+		</div>
 		<div>{{test}}</div>
 	</div>
 	<script>
@@ -128,22 +139,39 @@ schedule.forEach((d) => {
     i.attributes.end = new Date(i.attributes.end_at);
   })
 });
-let photo = photoList[Math.floor(Math.random() * photoList.length)].replace("/media/mystorage", "/webdav");
+function diffMonth(d){
+  let targetObj = new Date(birthDate);
+  let dm = d.getFullYear() * 12 + d.getMonth();
+  let target = targetObj.getFullYear() * 12 + targetObj.getMonth();
+
+  let r = dm - target;
+  return Math.floor(r/12) + "歳" + r%12 + "ヵ月"
+}
+let r = Math.floor(Math.random() * photoList.length)
+let photo = photoList[r].name.replace("/media/mystorage", "/webdav");
+let dateObj = new Date(photoList[r].date)
+let dateStr = dateObj.getFullYear() + "/" + (dateObj.getMonth()+1) + " " + diffMonth(dateObj)
 var app = new Vue({
   el: "#app",
   data: {
     schedule: schedule,
     photo: photo,
     test: photo,
+    dateStr: dateStr,
     disk: disk.file,
   },
   methods:{}
 });
 
 setTimeout(() =>{
-  let nextPhoto = photoList[Math.floor(Math.random() * photoList.length)].replace("/media/mystorage", "/webdav");
+  let r = Math.floor(Math.random() * photoList.length)
+  let nextPhoto = photoList[r].name.replace("/media/mystorage", "/webdav");
+  let dateObj = new Date(photoList[r].date)
+  let dateStr = dateObj.getFullYear() + "/" + (dateObj.getMonth()+1) + " " + diffMonth(dateObj)
+
   app.$data.photo = nextPhoto;
   app.$data.test = nextPhoto;
+  app.$data.dateStr = dateStr;
 }, 15 * 60 * 1000); // 15min
 setTimeout(() =>{
   document.location.reload();
