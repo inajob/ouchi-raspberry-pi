@@ -44,18 +44,20 @@ h1{
   position:absolute;
   top:6px;
   right:6px;
-  width:600px;
-  height: auto;
-  border: solid 3px white;
+  background-color: white;
   border-radius: 50px;
 }
-.top{
-  position: absolute;
-  top: 0px;
-  right: 0px;
+.cover img{
+  border: solid 3px white;
+  width:600px;
+  height: auto;
+  border-radius: 50px;
 }
-.top div{
-  background-color: white;
+.cover div{
+  border-radius: 50px;
+  text-align: center;
+  font-size: x-large;
+  font-weight: bold;
 }
 
 </style>
@@ -67,7 +69,7 @@ h1{
 <script src="out/disk.js"></script>
 </head>
 <body>
-	<h1>WEB SIGNAGE</h1>
+	<h1>おうちサイネージ</h1>
 	<div id="app">
 		<div v-for="day in schedule">
 			<div class="date">{{ day.date }} <span class="minTemp">{{day.minTemp}}</span>/<span class="maxTemp">{{day.maxTemp}}</span><span class="weather">{{day.weather}}</span></div>
@@ -82,11 +84,11 @@ h1{
 				</div>
 			</div>
 		</div>
-		<img class="cover" v-bind:src="photo" />
-		<div class="top">
-			<div>{{disk}}, {{dateStr}}</div>
+		<div class="cover">
+		  <div>{{dateStr}}</div>
+		  <img v-bind:src="photo" />
 		</div>
-		<div>{{test}}</div>
+		<div>{{disk}}, {{test}}</div>
 	</div>
 	<script>
 function hoge(){return "in hoge"}
