@@ -52,6 +52,14 @@
     minute: "0"
     job: "/home/pi/work/web-signage/daily.sh"
 
+- name: set user cron for tuner-info
+  cron:
+    name: tuner-info
+    user: pi
+    hour: "6-21"
+    minute: "0"
+    job: "/home/pi/work/tuner-info/get.sh"
+
 - name: set user cron for sleep time
   cron:
     name: "{{ item.name }}"

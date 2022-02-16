@@ -1,0 +1,7 @@
+payload={
+      "username": "webhook"
+    , "channel": "#alert"
+    , "text": "[tuner] FAILED!!"
+    , "icon_emoji": ":ghost:"
+}
+

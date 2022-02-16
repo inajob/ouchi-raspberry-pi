@@ -13,6 +13,7 @@ inajobの家でファイルサーバ兼、デジタルサイネージを司っ�
 - WebサイネージはHDDに存在する写真をランダムで表示します。この表示は15分毎に切り替わります。
 - google-home-notifierが起動しており、これを経由して同一LAN内のGoogle Homeに任意の文言をしゃべらせたり、mp3を再生出来ます
 - 上記仕組みを使い「こもりうた」を定時に再生します。
+- TVチューナー(EX-BCTX2)の外付けHDDの死活監視を実施します。
 
 <img src="ouchi-raspberrypi.jpg">
 
@@ -57,6 +58,10 @@ google-home-notifierを起動するためのスクリプト、定期的に子守
 
 Webブラウザを使い TimeTreeの1週間分の予定、ディスク内の写真のランダム表示というサイネージ機能のためのスクリプトとWebページです。
 
+## tuner-info
+
+TVチューナー(EX-BCTX2)の外付けHDDの死活監視を実施し、動いていない場合はSlackに通知する
+
 # インストール方法
 
 ## 事前準備
@@ -88,6 +93,7 @@ Webブラウザを使い TimeTreeの1週間分の予定、ディスク内の写�
   - `timetree-id` TimeTreeで表示するカレンダーを示すID
   - `photo-path` サイネージにランダム表示する写真が格納されているルートディレクトリまでのパスを `/media/mystorage`からの相対パスで記載したもの(`/media/mystorage`以下の画像すべてであれば `./`と記載したファイルでOK)
   - `birthdate` 誕生日（サイネージの写真撮影時の月齢を表示するため）
+  - `tuner-address` TVチューナーのContentDirectoryアクセスのためのURL (例: `http://192.168.1.15:55247/dms/control/ContentDirectory`)
 
 ## 環境に合わせたデータの用意2
 
