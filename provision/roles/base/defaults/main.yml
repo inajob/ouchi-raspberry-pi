@@ -10,6 +10,9 @@ apt:
     - name: jq
     - name: libimage-exiftool-perl
     - name: sqlite3
+    - name: rclone
+    - name: imagemagick
+    - name: gupnp-tools
     # for google-home-notifier
     - name: libnss-mdns
     # for google-home-notifier
