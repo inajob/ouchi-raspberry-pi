@@ -56,7 +56,6 @@
   cron:
     name: tuner-info
     user: pi
-    hour: "6-21"
     minute: "0"
     job: "/home/pi/work/tuner-info/get.sh"
 
@@ -73,12 +72,24 @@
       minute: 45
     - name: afternoon sleep timer
       hour: 19
-      minute: 30
+      minute: 50
+
+- name: set user secret cron
+  cron:
+    name: secret cron
+    user: pi
+    hour: "1"
+    minute: "0"
+    job: "/home/pi/work/secrets/script.sh >> /home/pi/work/secret-script.log  2>&1"
+  with_first_found:
+    files:
+      - /home/pi/work/secrets/script.sh
+    skip: true
 
 - name: set file sync
   cron:
     name: backup files
-    user: root
+    user: root # ROOT!!
     hour: "5"
     minute: "0"
     job: "/home/pi/work/mirror/mirror.sh >> /home/pi/work/mirror/mirror.log  2>&1"
