@@ -9,6 +9,7 @@ apt:
     - name: xdotool
     - name: jq
     - name: libimage-exiftool-perl
+    - name: sqlite3
     # for google-home-notifier
     - name: libnss-mdns
     # for google-home-notifier
