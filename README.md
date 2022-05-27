@@ -62,6 +62,10 @@ Webブラウザを使い TimeTreeの1週間分の予定、ディスク内の写�
 
 TVチューナー(EX-BCTX2)の外付けHDDの死活監視を実施し、動いていない場合はSlackに通知する
 
+## todo-photo
+
+ESP32Camで1時間に1度撮影し、それをrcloneでリモートのストレージサービスに転送する
+
 # インストール方法
 
 ## 事前準備
@@ -94,6 +98,8 @@ TVチューナー(EX-BCTX2)の外付けHDDの死活監視を実施し、動い�
   - `photo-path` サイネージにランダム表示する写真が格納されているルートディレクトリまでのパスを `/media/mystorage`からの相対パスで記載したもの(`/media/mystorage`以下の画像すべてであれば `./`と記載したファイルでOK)
   - `birthdate` 誕生日（サイネージの写真撮影時の月齢を表示するため）
   - `tuner-address` TVチューナーのContentDirectoryアクセスのためのURL (例: `http://192.168.1.15:55247/dms/control/ContentDirectory`)
+  - `todo-camera-address` todoを撮影するESP32Camのアドレス (例: `http://192.168.1.30`)
+  - `script.sh` 夜中に1度実行する秘密のスクリプト
 
 ## 環境に合わせたデータの用意2
 
