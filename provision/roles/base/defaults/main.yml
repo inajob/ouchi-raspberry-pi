@@ -13,7 +13,9 @@ apt:
     - name: rclone
     - name: imagemagick
     - name: gupnp-tools
+    - name: screen
     # for google-home-notifier
     - name: libnss-mdns
     # for google-home-notifier
     - name: libavahi-compat-libdnssd-dev
+    - name: docker.io
