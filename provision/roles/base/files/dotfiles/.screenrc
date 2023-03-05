@@ -1,0 +1,11 @@
+defutf8 on
+defencoding utf8
+encoding utf8 utf8
+startup_message off
+vbell off
+idefbce on
+term xterm-256color
+
+hardstatus alwayslastline "%{= cd} %-w%{= wk} %n %t* %{-}%+w"
+shell $SHELL
+
