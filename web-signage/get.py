@@ -82,6 +82,6 @@ if __name__=='__main__':
   obj = get()
   #print(obj);
   sobj = json.dumps(obj, default=json_serial); 
-  print("var schedule = " + sobj + ";");
+  print(sobj);
 
 
