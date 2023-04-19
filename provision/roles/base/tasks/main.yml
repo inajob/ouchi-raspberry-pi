@@ -86,6 +86,25 @@
       hour: 20
       minute: 15
 
+- name: set user cron for hoikuen time
+  cron:
+    name: "{{ item.name }}"
+    user: pi
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "1-5"
+    job: "{{ item.job }}"
+  loop:
+    - name: hoikuen ready time
+      hour: 7
+      minute: 30
+      job: "/home/pi/work/google-home/hoikuen-ready-time.sh"
+    - name: hoikuen time
+      hour: 7
+      minute: 50
+      job: "/home/pi/work/google-home/hoikuen-time.sh"
+
+
 - name: set user cron for todo-photo
   cron:
     name: todo-photo
