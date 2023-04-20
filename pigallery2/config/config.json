@@ -1,0 +1,274 @@
+{
+    "Server": {
+        "sessionSecret": [],
+        "port": 3000,
+        "host": "0.0.0.0",
+        "Media": {
+            "//[folder]": "Images are loaded from this folder (read permission required)",
+            "folder": "/app/data/images",
+            "//[tempFolder]": "Thumbnails, converted photos, videos will be stored here (write permission required)",
+            "tempFolder": "/app/data/tmp",
+            "Video": {
+                "transcoding": {
+                    "bitRate": 5242880,
+                    "resolution": 720,
+                    "fps": 25,
+                    "codec": "libx264",
+                    "format": "mp4",
+                    "//[crf]": "Constant Rate Factor. The range of the CRF scale is 0–51, where 0 is lossless, 23 is the default, and 51 is worst quality possible.",
+                    "crf": 23,
+                    "//[preset]": "A preset is a collection of options that will provide a certain encoding speed to compression ratio",
+                    "preset": "medium",
+                    "//[customOptions]": "It will be sent to ffmpeg as it is, as custom options.",
+                    "customOptions": []
+                }
+            },
+            "Photo": {
+                "Converting": {
+                    "//[onTheFly]": "Converts photos on the fly, when they are requested.",
+                    "onTheFly": true,
+                    "resolution": 1080
+                }
+            },
+            "Thumbnail": {
+                "//[qualityPriority]": "if true, photos will have better quality.",
+                "qualityPriority": true,
+                "personFaceMargin": 0.6
+            }
+        },
+        "Preview": {
+            "SearchQuery": {
+                "type": 100,
+                "text": ""
+            },
+            "Sorting": [
+                6,
+                4
+            ]
+        },
+        "Threading": {
+            "//[enabled]": "App can run on multiple thread",
+            "enabled": true,
+            "//[thumbnailThreads]": "Number of threads that are used to generate thumbnails. If 0, number of 'CPU cores -1' threads will be used.",
+            "thumbnailThreads": 0
+        },
+        "Database": {
+            "type": "sqlite",
+            "dbFolder": "/app/data/db",
+            "sqlite": {
+                "DBFileName": "sqlite.db"
+            },
+            "mysql": {
+                "host": "localhost",
+                "port": 3306,
+                "database": "pigallery2",
+                "username": "",
+                "password": ""
+            },
+            "//[enforcedUsers]": "Creates these users in the DB if they do not exist. If a user with this name exist, it wont be overwritten, even if the role is different.",
+            "enforcedUsers": []
+        },
+        "Sharing": {
+            "updateTimeout": 300000
+        },
+        "//[sessionTimeout]": "unit: ms",
+        "sessionTimeout": 604800000,
+        "Indexing": {
+            "cachedFolderTimeout": 3600000,
+            "reIndexingSensitivity": "low",
+            "//[excludeFolderList]": "If an entry starts with '/' it is treated as an absolute path. If it doesn't start with '/' but contains a '/', the path is relative to the image directory. If it doesn't contain a '/', any folder with this name will be excluded.",
+            "excludeFolderList": [
+                ".Trash-1000",
+                ".dtrash",
+                "$RECYCLE.BIN"
+            ],
+            "//[excludeFileList]": "Any folder that contains a file with this name will be excluded from indexing.",
+            "excludeFileList": []
+        },
+        "//[photoMetadataSize]": "only this many bites will be loaded when scanning photo for metadata",
+        "photoMetadataSize": 524288,
+        "Duplicates": {
+            "listingLimit": 1000
+        },
+        "Log": {
+            "level": "info",
+            "sqlLevel": "error",
+            "logServerTiming": false
+        },
+        "Jobs": {
+            "//[maxSavedProgress]": "Job history size",
+            "maxSavedProgress": 10,
+            "scheduled": [
+                {
+                    "name": "Indexing",
+                    "jobName": "Indexing",
+                    "config": {
+                        "indexChangesOnly": true
+                    },
+                    "allowParallelRun": false,
+                    "trigger": {
+                        "type": "never"
+                    }
+                },
+                {
+                    "name": "Preview Filling",
+                    "jobName": "Preview Filling",
+                    "config": {},
+                    "allowParallelRun": false,
+                    "trigger": {
+                        "type": "never"
+                    }
+                },
+                {
+                    "name": "Thumbnail Generation",
+                    "jobName": "Thumbnail Generation",
+                    "config": {
+                        "sizes": [
+                            240
+                        ],
+                        "indexedOnly": true
+                    },
+                    "allowParallelRun": false,
+                    "trigger": {
+                        "type": "after",
+                        "afterScheduleName": "Preview Filling"
+                    }
+                },
+                {
+                    "name": "Photo Converting",
+                    "jobName": "Photo Converting",
+                    "config": {
+                        "indexedOnly": true
+                    },
+                    "allowParallelRun": false,
+                    "trigger": {
+                        "type": "after",
+                        "afterScheduleName": "Thumbnail Generation"
+                    }
+                },
+                {
+                    "name": "Video Converting",
+                    "jobName": "Video Converting",
+                    "config": {
+                        "indexedOnly": true
+                    },
+                    "allowParallelRun": false,
+                    "trigger": {
+                        "type": "after",
+                        "afterScheduleName": "Photo Converting"
+                    }
+                },
+                {
+                    "name": "Temp Folder Cleaning",
+                    "jobName": "Temp Folder Cleaning",
+                    "config": {
+                        "indexedOnly": true
+                    },
+                    "allowParallelRun": false,
+                    "trigger": {
+                        "type": "after",
+                        "afterScheduleName": "Video Converting"
+                    }
+                }
+            ]
+        }
+    },
+    "Client": {
+        "applicationTitle": "PiGallery 2",
+        "publicUrl": "",
+        "urlBase": "",
+        "Search": {
+            "enabled": true,
+            "searchCacheTimeout": 3600000,
+            "AutoComplete": {
+                "enabled": true,
+                "targetItemsPerCategory": 5,
+                "maxItems": 30,
+                "cacheTimeout": 3600000
+            },
+            "maxMediaResult": 10000,
+            "//[listDirectories]": "Search returns also with directories, not just media",
+            "listDirectories": false,
+            "//[listMetafiles]": "Search also returns with metafiles from directories that contain a media file of the matched search result",
+            "listMetafiles": true,
+            "maxDirectoryResult": 200
+        },
+        "Sharing": {
+            "enabled": false,
+            "passwordProtected": true
+        },
+        "Album": {
+            "enabled": true
+        },
+        "Map": {
+            "enabled": true,
+            "//[maxPreviewMarkers]": "Maximum number of markers to be shown on the map preview on the gallery page.",
+            "maxPreviewMarkers": 50,
+            "useImageMarkers": true,
+            "mapProvider": "OpenStreetMap",
+            "mapboxAccessToken": "",
+            "customLayers": [
+                {
+                    "name": "street",
+                    "url": ""
+                }
+            ]
+        },
+        "RandomPhoto": {
+            "//[enabled]": "Enables random link generation.",
+            "enabled": true
+        },
+        "Other": {
+            "customHTMLHead": "",
+            "enableCache": true,
+            "enableOnScrollRendering": true,
+            "defaultPhotoSortingMethod": "ascDate",
+            "//[enableDirectorySortingByDate]": "If enabled directories will be sorted by date, like photos, otherwise by name. Directory date is the last modification time of that directory not the creation date of the oldest photo",
+            "enableDirectorySortingByDate": false,
+            "enableOnScrollThumbnailPrioritising": true,
+            "NavBar": {
+                "showItemCount": true
+            },
+            "captionFirstNaming": false,
+            "enableDownloadZip": false,
+            "//[enableDirectoryFlattening]": "Adds a button to flattens the file structure, by listing the content of all subdirectories.",
+            "enableDirectoryFlattening": false
+        },
+        "authenticationRequired": false,
+        "unAuthenticatedUserRole": "Admin",
+        "Media": {
+            "Thumbnail": {
+                "iconSize": 45,
+                "personThumbnailSize": 200,
+                "thumbnailSizes": [
+                    240,
+                    480
+                ]
+            },
+            "Video": {
+                "enabled": true
+            },
+            "Photo": {
+                "Converting": {
+                    "enabled": true
+                },
+                "//[loadFullImageOnZoom]": "Enables loading the full resolution image on zoom in the ligthbox (preview).",
+                "loadFullImageOnZoom": true
+            }
+        },
+        "MetaFile": {
+            "//[gpx]": "Reads *.gpx files and renders them on the map.",
+            "gpx": true,
+            "//[markdown]": "Reads *.md files in a directory and shows the next to the map.",
+            "markdown": true,
+            "//[pg2conf]": "Reads *.pg2conf files (You can use it for custom sorting and save search (albums)).",
+            "pg2conf": true
+        },
+        "Faces": {
+            "enabled": true,
+            "keywordsToPersons": true,
+            "writeAccessMinRole": "Admin",
+            "readAccessMinRole": "User"
+        }
+    }
+}

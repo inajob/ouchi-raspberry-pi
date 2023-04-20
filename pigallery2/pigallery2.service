@@ -1,0 +1,15 @@
+[Unit]
+Description=PiGallery2
+
+[Service]
+WorkingDirectory=/home/pi/work/pigallery2/
+EnvironmentFile=/home/pi/work/secrets/pigallery2.systemd.env
+ExecStart=/usr/bin/docker-compose -p pigallery2 -f docker-compose.yml up
+ExecStop=/usr/bin/docker-compose -p pigallery2 -f docker-compose.yml down
+ExecReload=/usr/bin/docker-compose -p pigallery2 -f docker-compose.yml restart
+Restart=always
+
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

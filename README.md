@@ -13,7 +13,9 @@ inajobの家でファイルサーバ兼、デジタルサイネージを司っ�
 - WebサイネージはHDDに存在する写真をランダムで表示します。この表示は15分毎に切り替わります。
 - google-home-notifierが起動しており、これを経由して同一LAN内のGoogle Homeに任意の文言をしゃべらせたり、mp3を再生出来ます
 - 上記仕組みを使い「こもりうた」を定時に再生します。
+- 上記仕組みを使い「保育園に行く時間」を定時に再生します。
 - TVチューナー(EX-BCTX2)の外付けHDDの死活監視を実施します。
+- [PiGallery2](http://bpatrik.github.io/pigallery2/)で写真を閲覧できます
 
 <img src="ouchi-raspberrypi.jpg">
 
@@ -109,7 +111,6 @@ ESP32Camで1時間に1度撮影し、それをrcloneでリモートのストレ�
 https://qiita.com/wnoguchi/items/b31e268b6b7236cdf8db などを参考にUUIDを取得します。
 
 (例)
-
 
 ```
 UUID=取得したUUID1 /media/mystorage ntfs-3g async,auto,dev,exec,nofail,gid=65534,rw,uid=65534,umask=000    0    0

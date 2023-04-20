@@ -1,0 +1,17 @@
+version: '3'
+services:
+  pigallery2:
+    image: bpatrik/pigallery2:latest
+    container_name: pigallery2
+    env_file: ../secrets/pigallery2.env
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - "./config:/app/data/config"
+      - "${DB_DIR}:/app/data/db"
+      - "${IMAGE_DIR}:/app/data/images:ro"
+      - "${TMP_DIR}:/app/data/tmp"
+    ports:
+      - 3000:3000
+    user: "1000:1000"
+    restart: always
